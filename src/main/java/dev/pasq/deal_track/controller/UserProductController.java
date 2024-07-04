@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/product")
 public class UserProductController {
 
-    private UserProductService userProductService;
+    private final UserProductService userProductService;
 
     public UserProductController(UserProductService userProductService) {
         this.userProductService = userProductService;

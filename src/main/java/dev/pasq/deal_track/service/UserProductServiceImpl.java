@@ -37,7 +37,7 @@ public class UserProductServiceImpl implements UserProductService{
             //fetch the API
             CompletableFuture<String> apiResponseFuture = clientService.getProductDetails(productAsin);
             String apiResponse = apiResponseFuture.join();
-            System.out.println("Api response: "+apiResponse);
+            //System.out.println("Api response: "+apiResponse);
             Product newProduct = parseProductDetails(apiResponse, productAsin);
             return productRepository.save(newProduct);
         });
@@ -60,16 +60,16 @@ public class UserProductServiceImpl implements UserProductService{
 
         userProductRepository.save(userProduct);
     }
-
+    @Override
     public Product parseProductDetails(String apiResponse,String productAsin){
 
         try{
             ObjectMapper mapper = new ObjectMapper();
             //parse JSON response into JsonNode
             JsonNode rootNode = mapper.readTree(apiResponse);
-            System.out.println("Root node: "+rootNode);
+            //System.out.println("Root node: "+rootNode);
             JsonNode dataNode = rootNode.get("data");
-            System.out.println("datanode: "+dataNode);
+            //System.out.println("datanode: "+dataNode);
 
             //extract product details
             String productPrice = getStringFromJsonNode(dataNode, "product_price");
