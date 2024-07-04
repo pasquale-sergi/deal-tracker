@@ -23,4 +23,10 @@ public class UserProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Product added successfully");
 
     }
+
+    @DeleteMapping("/delete/{productAsin}")
+    public ResponseEntity<String> deleteProductFromUserTracking(@PathVariable("productAsin") String productAsin){
+        userProductService.deleteProductToUser(productAsin);
+        return ResponseEntity.ok("Product deleted");
+    }
 }

@@ -60,6 +60,28 @@ public class UserProductServiceImpl implements UserProductService{
 
         userProductRepository.save(userProduct);
     }
+
+    @Override
+    public void deleteProductToUser(String productAsin) {
+        Long userId = 1L;
+        Product product = productRepository
+                .findByAsin(productAsin)
+                .orElseThrow(()->new IllegalArgumentException("Product not found with given ASIN: "+productAsin));
+
+        User user = userRepository
+                .findById(userId)
+                .orElseThrow(()->new IllegalArgumentException("User not found with given id: "+userId));
+
+        UserProductId userProductIdToDelete = new UserProductId(userId, productAsin);
+
+        // Find the UserProduct entry to delete
+        UserProduct userProductToDelete = userProductRepository.findById(userProductIdToDelete)
+                .orElseThrow(() -> new IllegalArgumentException("UserProduct not found for userId: " + userId + " and productAsin: " + productAsin));
+
+        // Delete the UserProduct
+        userProductRepository.delete(userProductToDelete);
+    }
+
     @Override
     public Product parseProductDetails(String apiResponse,String productAsin){
 

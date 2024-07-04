@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 public class HttpClientService {
 
     private final AsyncHttpClient client;
-    @Value("${rapidapi-key}")
+    @Value("${rapidapi.key}")
     private String rapidApiKey;
     @Value("${rapidapi.host}")
     private String rapidApiHost;

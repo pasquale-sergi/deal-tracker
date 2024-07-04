@@ -6,5 +6,7 @@ public interface UserProductService {
 
     void addProductToUser(Long userId, String productAsin);
 
+    void deleteProductToUser( String productAsin);
+
     Product parseProductDetails(String apiResponse, String productAsin);
 }

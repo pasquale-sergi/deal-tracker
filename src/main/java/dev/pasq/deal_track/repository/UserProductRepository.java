@@ -1,5 +1,6 @@
 package dev.pasq.deal_track.repository;
 
+import dev.pasq.deal_track.entity.Product;
 import dev.pasq.deal_track.entity.User;
 import dev.pasq.deal_track.entity.UserProduct;
 import dev.pasq.deal_track.entity.UserProductId;
@@ -11,4 +12,6 @@ public interface UserProductRepository extends JpaRepository<UserProduct, UserPr
   boolean existsByUserIdAndProductAsin(Long userId, String asin);
 
   List<UserProduct> findAllByUserId(Long userId);
+
+
 }
