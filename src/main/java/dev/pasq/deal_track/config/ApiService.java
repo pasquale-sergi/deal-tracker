@@ -26,7 +26,7 @@ public class ApiService {
     private UserProductRepository userProductRepository;
 
     private UserProductServiceImpl userProductService;
-    @Scheduled(fixedRate = 600000)
+   // @Scheduled(fixedRate = 300000)
     public void makeApiCall(){
         Long userId = 1L;
         List<UserProduct> userProducts = userProductRepository.findAllByUserId(userId);

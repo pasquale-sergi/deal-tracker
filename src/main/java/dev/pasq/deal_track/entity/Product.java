@@ -24,6 +24,6 @@ public class Product {
     private String url;
     @Column
     private BigDecimal price;
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<UserProduct> userProducts;
 }

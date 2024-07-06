@@ -17,7 +17,7 @@ public class UserProduct {
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name="user_id")
-    private User user;
+    private ApplicationUser user;
     @ManyToOne
     @MapsId("productAsin")
     @JoinColumn(name="product_asin")

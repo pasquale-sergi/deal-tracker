@@ -3,33 +3,35 @@ package dev.pasq.deal_track.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.pasq.deal_track.config.HttpClientService;
+import dev.pasq.deal_track.entity.ApplicationUser;
 import dev.pasq.deal_track.entity.Product;
-import dev.pasq.deal_track.entity.User;
 import dev.pasq.deal_track.entity.UserProduct;
 import dev.pasq.deal_track.entity.UserProductId;
 import dev.pasq.deal_track.repository.ProductRepository;
 import dev.pasq.deal_track.repository.UserProductRepository;
 import dev.pasq.deal_track.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 
 public class UserProductServiceImpl implements UserProductService{
 
-    private UserRepository userRepository;
-    private ProductRepository productRepository;
-    private UserProductRepository userProductRepository;
-    private HttpClientService clientService;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final UserProductRepository userProductRepository;
+    private final HttpClientService clientService;
     @Override
     public void addProductToUser(Long userId, String productAsin) {
-        User user = userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("User not found with id: "+userId));
+        ApplicationUser applicationUser = userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("User not found with id: "+userId));
         //if user found
 
         //check first if the product exist in the database already
@@ -53,7 +55,7 @@ public class UserProductServiceImpl implements UserProductService{
 
         UserProduct userProduct = new UserProduct();
         userProduct.setId(userProductId);
-        userProduct.setUser(user);
+        userProduct.setUser(applicationUser);
         userProduct.setProduct(product);
         userProduct.setTrackingStatus("ACTIVE");
         userProduct.setLastPriceTracked(product.getPrice());
@@ -68,7 +70,7 @@ public class UserProductServiceImpl implements UserProductService{
                 .findByAsin(productAsin)
                 .orElseThrow(()->new IllegalArgumentException("Product not found with given ASIN: "+productAsin));
 
-        User user = userRepository
+        ApplicationUser applicationUser = userRepository
                 .findById(userId)
                 .orElseThrow(()->new IllegalArgumentException("User not found with given id: "+userId));
 
@@ -81,6 +83,23 @@ public class UserProductServiceImpl implements UserProductService{
         // Delete the UserProduct
         userProductRepository.delete(userProductToDelete);
     }
+
+    @Override
+    public List<UserProduct> getUserProducts(Long userId) {
+        List<UserProduct> products = userProductRepository.findAllByUserId(userId);
+        log.info("Fetched products for user {}: {}", userId, products);
+        return products;
+
+    }
+    @Override
+    public List<UserProduct> getAllProds() {
+        Long userId = 1L;
+        List<UserProduct> products = userProductRepository.findAllByUserId(userId);
+        System.out.println("Fetched products for user {}: {}" + userId + products);
+        return products;
+
+    }
+
 
     @Override
     public Product parseProductDetails(String apiResponse,String productAsin){
