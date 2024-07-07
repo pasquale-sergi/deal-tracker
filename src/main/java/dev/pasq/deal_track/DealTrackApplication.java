@@ -32,7 +32,7 @@ public class DealTrackApplication {
 
 			Set<dev.pasq.deal_track.entity.Role> roles = new HashSet<>();
 			roles.add(adminRole);
-			ApplicationUser admin = new ApplicationUser(1L,"admin", "admin@gmail.com", encoder.encode("password"), roles);
+			ApplicationUser admin = new ApplicationUser(1L,"admin", "admin@gmail.com", encoder.encode("password"), roles, true, true);
 			userRepository.save(admin);
 		};
 	}

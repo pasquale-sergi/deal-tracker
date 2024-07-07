@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 @Entity
 @Data
@@ -36,14 +35,18 @@ public class ApplicationUser implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name="role_id")}
     )
     private Set<Role> authorities;
+    private Boolean isLocked;
+    private Boolean enabled;
 
 
-    public ApplicationUser(Long id,String username, String email, String password, Set<Role> authorities ){
+    public ApplicationUser(Long id,String username, String email, String password, Set<Role> authorities , boolean isLocked , boolean enabled){
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.isLocked= isLocked;
+        this.enabled = enabled;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -67,7 +70,7 @@ public class ApplicationUser implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !isLocked;
     }
 
     @Override
@@ -77,6 +80,6 @@ public class ApplicationUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }
